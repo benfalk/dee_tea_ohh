@@ -6,25 +6,14 @@
 # with defining types to encode to.
 #
 module DeeTeaOhh::Type
-  module Constants
-    NULL = { type: 'null' }.freeze
-    INTEGER = { type: 'integer' }.freeze
-    FLOAT = { type: 'numeric' }.freeze
-    STRING = { type: 'string' }.freeze
-  end
-  private_constant :Constants
-
   # = Base Type Definition
   #
   # Any and all shared functionality comes from
   # this base type definition.
   #
   class Base
-    # @return [Object]
-    def schema = raise NotImplementedError
-
     # @return [Hash]
-    def json_schema = DeeTeaOhh::Schema::JSON.schema_for(self)
+    def json_schema = DeeTeaOhh::Schema.json(self)
   end
   private_constant :Base
 
