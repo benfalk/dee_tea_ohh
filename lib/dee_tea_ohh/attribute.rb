@@ -24,4 +24,6 @@ class DeeTeaOhh::Attribute
     @is_required = is_required
     freeze
   end
+
+  require_relative 'attribute/list'
 end

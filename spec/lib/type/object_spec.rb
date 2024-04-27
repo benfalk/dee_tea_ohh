@@ -1,47 +1,42 @@
 # frozen_string_literal: true
 
 RSpec.describe DeeTeaOhh::Type::Object do
-  let(:attributes) { {} }
-  let(:instance) { described_class.new(attributes) }
+  let(:instance) { described_class.new(attr_list) }
 
-  it do
-    expect(instance.attributes).to eq(attributes)
-    expect(instance.json_schema).to eq(
-      {
-        type: 'object',
-        additionalProperties: false,
-        required: [],
-        properties: {}
-      }
-    )
-  end
-
-  context 'with a few attributes' do
-    let(:attributes) do
-      {
-        foo: DeeTeaOhh::Attribute.new(
-          field_name: :foo,
-          type: DeeTeaOhh::Type::String.new,
-          is_required: true
-        ),
-        bar: DeeTeaOhh::Attribute.new(
-          field_name: :bar,
-          type: DeeTeaOhh::Type::Integer.new,
-          is_required: false
-        )
-      }
-    end
+  context 'with an empty list' do
+    let(:attr_list) { build(:attribute_list) }
 
     it do
-      expect(instance.attributes).to eq(attributes)
+      expect(instance.attributes).to eq(attr_list)
       expect(instance.json_schema).to eq(
         {
           type: 'object',
           additionalProperties: false,
-          required: [:foo],
+          required: [],
+          properties: {}
+        }
+      )
+    end
+  end
+
+  context 'with snippet attribute list' do
+    let(:attr_list) { build(:attribute_list, :snippet) }
+
+    it do
+      expect(instance.attributes).to eq(attr_list)
+      expect(instance.json_schema).to eq(
+        {
+          type: 'object',
+          additionalProperties: false,
+          required: %i[id title summary categories],
           properties: {
-            foo: { type: 'string' },
-            bar: { type: 'integer' }
+            id: { type: 'integer' },
+            title: { type: 'string' },
+            summary: { type: 'string' },
+            categories: {
+              type: 'array',
+              items: { type: 'string' }
+            }
           }
         }
       )

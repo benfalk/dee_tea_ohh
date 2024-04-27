@@ -23,11 +23,11 @@ module DeeTeaOhh::Type
   # types that they hold
   #
   class Object < Base
-    # @return [Hash<Symbol, DeeTeaOhh::Attribute>]
+    # @return [DeeTeaOhh::Attribute::List]
     attr_reader :attributes
 
-    # @param attributes [Hash<Symbol, DeeTeaOhh::Attribute>]
-    def initialize(attributes = {})
+    # @param attributes [DeeTeaOhh::Attribute::List]
+    def initialize(attributes = DeeTeaOhh::Attribute::List.empty)
       super()
       @attributes = attributes
       freeze
@@ -76,4 +76,7 @@ module DeeTeaOhh::Type
 
   # = String Type Definition
   class String < Base; end
+
+  # = Boolean Type Definition
+  class Boolean < Base; end
 end

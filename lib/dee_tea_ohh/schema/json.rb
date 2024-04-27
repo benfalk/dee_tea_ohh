@@ -8,12 +8,13 @@ module DeeTeaOhh::Schema
       INTEGER = { type: 'integer' }.freeze
       FLOAT = { type: 'numeric' }.freeze
       STRING = { type: 'string' }.freeze
+      BOOLEAN = { type: 'boolean' }.freeze
     end
     private_constant :Constants
 
     refine DeeTeaOhh::Type::Object do
       # @!attribute [r] attributes
-      #   @return [Hash<Symbol, DeeTeaOhh::Attribute>]
+      #   @return [DeeTeaOhh::Attribute::List]
 
       # @return [Hash]
       def schema
@@ -28,17 +29,13 @@ module DeeTeaOhh::Schema
       private
 
       def required
-        attributes
-          .values
-          .select(&:is_required)
-          .map!(&:field_name)
-          .freeze
+        attributes.required.map!(&:field_name).freeze
       end
 
       def properties
-        attributes
-          .transform_values { |attr| attr.type.schema }
-          .freeze
+        attributes.to_h.transform_values do |attr|
+          attr.type.schema
+        end.freeze
       end
     end
 
@@ -82,6 +79,11 @@ module DeeTeaOhh::Schema
     refine DeeTeaOhh::Type::Float do
       # @return [Hash]
       def schema = Constants::FLOAT
+    end
+
+    refine DeeTeaOhh::Type::Boolean do
+      # @return [Hash]
+      def schema = Constants::BOOLEAN
     end
 
     using self
