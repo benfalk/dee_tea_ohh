@@ -6,6 +6,9 @@ Style/StringLiterals:
   Enabled: true
   EnforcedStyle: single_quotes
 
+Metrics/BlockLength:
+  AllowedMethods: ['describe', 'it', 'context']
+
 Style/StringLiteralsInInterpolation:
   Enabled: true
   EnforcedStyle: double_quotes
