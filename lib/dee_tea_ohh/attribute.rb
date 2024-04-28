@@ -26,4 +26,5 @@ class DeeTeaOhh::Attribute
   end
 
   require_relative 'attribute/list'
+  require_relative 'attribute/list_builder'
 end

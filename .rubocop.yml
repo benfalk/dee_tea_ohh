@@ -7,7 +7,7 @@ Style/StringLiterals:
   EnforcedStyle: single_quotes
 
 Metrics/BlockLength:
-  AllowedMethods: ['describe', 'it', 'context']
+  AllowedMethods: ['define', 'describe', 'it', 'context']
 
 Style/StringLiteralsInInterpolation:
   Enabled: true
