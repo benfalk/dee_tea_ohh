@@ -24,6 +24,10 @@ module DeeTeaOhh::DSL::TypeResolver
     end
   end
 
+  refine DeeTeaOhh::DSL::ObjectTypeDef do
+    def dto_type = self.class.dto_type
+  end
+
   using self
 
   module_function

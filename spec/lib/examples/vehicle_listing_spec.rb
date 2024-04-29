@@ -29,6 +29,8 @@ class VehicleListing < DeeTeaOhh.object \
 end
 
 RSpec.describe VehicleListing do
+  # @!attribute subject [r]
+  #   @return [VehicleListing]
   subject do
     described_class.new(
       vin: 'xxx',
@@ -40,6 +42,35 @@ RSpec.describe VehicleListing do
     )
   end
 
+  let(:expected_json_schema) do
+    {
+      type: 'object',
+      additionalProperties: false,
+      required: %i[
+        vin make_slug model_slug
+        dealership_id price price_history
+      ],
+      properties: {
+        vin: { type: 'string' },
+        make_slug: { type: 'string' },
+        model_slug: { type: 'string' },
+        dealership_id: { type: 'integer' },
+        price: {
+          oneOf: [
+            { type: 'numeric' },
+            { type: 'null' }
+          ]
+        },
+        price_history: {
+          oneOf: [
+            { type: 'array', items: { type: 'numeric' } },
+            { type: 'null' }
+          ]
+        }
+      }
+    }
+  end
+
   it do
     expect(subject.vin).to eq('xxx')
     expect(subject.make_slug).to eq('ford')
@@ -47,5 +78,11 @@ RSpec.describe VehicleListing do
     expect(subject.dealership_id).to eq(42)
     expect(subject.price).to eq(4200.69)
     expect(subject.price_history).to eq([4199.99, 4200.69])
+
+    expect(DeeTeaOhh::Schema.json(subject))
+      .to eq(expected_json_schema)
+
+    expect(DeeTeaOhh::Schema.json(VehicleListing))
+      .to eq(expected_json_schema)
   end
 end

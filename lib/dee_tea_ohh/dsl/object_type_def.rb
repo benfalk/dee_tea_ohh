@@ -10,7 +10,8 @@ module DeeTeaOhh::DSL::ObjectTypeDef
   module ClassMethods
     def dto_type = @dto_type
 
-    def inerited(klass)
+    def inherited(klass)
+      super
       klass.extend(ClassMethods)
       klass.instance_variable_set(
         :@dto_type,

@@ -9,6 +9,6 @@
 #
 module DeeTeaOhh::DSL
   require_relative 'dsl/data_builder'
-  require_relative 'dsl/type_resolver'
   require_relative 'dsl/object_type_def'
+  require_relative 'dsl/type_resolver'
 end
