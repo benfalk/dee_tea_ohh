@@ -11,9 +11,9 @@ class DeeTeaOhh::DSL::DataBuilder
   # @param type_spec [Object]
   # @param null [Boolean]
   # @return [void]
-  def attribute(field_name, type_spec, null: false)
+  def attribute(field_name, type_spec)
     type = @resolver.resolve(type_spec)
-    @builder = @builder.attribute(field_name, type:, null:)
+    @builder = @builder.attribute(field_name, type:, null: false)
     nil
   end
 
@@ -26,5 +26,12 @@ class DeeTeaOhh::DSL::DataBuilder
     data.instance_variable_set(:@dto_type, dto_type)
     data.include(DeeTeaOhh::DSL::ObjectTypeDef)
     data
+  end
+
+  private
+
+  def Nullable(type_spec) # rubocop:disable Naming/MethodName
+    type = @resolver.resolve(type_spec)
+    DeeTeaOhh::Type::Nullable.new(type)
   end
 end

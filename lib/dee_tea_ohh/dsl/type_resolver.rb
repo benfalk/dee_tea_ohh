@@ -2,6 +2,14 @@
 
 # = Type Resolver
 module DeeTeaOhh::DSL::TypeResolver
+  module Constants
+    STRING = DeeTeaOhh::Type::String.new.freeze
+    FLOAT = DeeTeaOhh::Type::Float.new.freeze
+    INTEGER = DeeTeaOhh::Type::Integer.new.freeze
+    BOOLEAN = DeeTeaOhh::Type::Boolean.new.freeze
+  end
+  private_constant :Constants
+
   refine Symbol do
     def dto_type
       case self
@@ -26,6 +34,38 @@ module DeeTeaOhh::DSL::TypeResolver
 
   refine DeeTeaOhh::DSL::ObjectTypeDef do
     def dto_type = self.class.dto_type
+  end
+
+  refine ::String.singleton_class do
+    def dto_type = Constants::STRING
+  end
+
+  refine ::String do
+    def dto_type = Constants::STRING
+  end
+
+  refine ::Float.singleton_class do
+    def dto_type = Constants::FLOAT
+  end
+
+  refine ::Float do
+    def dto_type = Constants::FLOAT
+  end
+
+  refine ::Integer.singleton_class do
+    def dto_type = Constants::INTEGER
+  end
+
+  refine ::Integer do
+    def dto_type = Constants::INTEGER
+  end
+
+  refine ::TrueClass do
+    def dto_type = Constants::BOOLEAN
+  end
+
+  refine ::FalseClass do
+    def dto_type = Constants::BOOLEAN
   end
 
   using self

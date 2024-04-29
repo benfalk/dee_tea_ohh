@@ -1,30 +1,42 @@
 # frozen_string_literal: true
 
+class PriceHistoryItem < DeeTeaOhh.object \
+  do
+    # @!attribute [r] timestamp
+    #   @return [Integer]
+    attribute(:timestamp, Integer)
+
+    # @!attribute [r] price
+    #   @return [Float]
+    attribute(:price, Float)
+  end
+end
+
 class VehicleListing < DeeTeaOhh.object \
   do
     # @!attribute [r] vin
     #   @return [String]
-    attribute(:vin, :string)
+    attribute(:vin, String)
 
     # @!attribute [r] make_slug
     #   @return [String]
-    attribute(:make_slug, :string)
+    attribute(:make_slug, String)
 
     # @!attribute [r] model_slug
     #   @return [String]
-    attribute(:model_slug, :string)
+    attribute(:model_slug, String)
 
     # @!attribute [r] dealership_id
     #   @return [Integer]
-    attribute(:dealership_id, :integer)
+    attribute(:dealership_id, Integer)
 
     # @!attribute [r] price
     #   @return [Float]
-    attribute(:price, :float, null: true)
+    attribute(:price, Nullable(Float))
 
     # @!attribute [r] price_history
-    #   @return [Array<Float>]
-    attribute(:price_history, [:float], null: true)
+    #   @return [Array<PriceHistoryItem>]
+    attribute(:price_history, Array(PriceHistoryItem))
   end
 end
 
@@ -38,7 +50,10 @@ RSpec.describe VehicleListing do
       model_slug: 'f-150',
       dealership_id: 42,
       price: 4200.69,
-      price_history: [4199.99, 4200.69]
+      price_history: [
+        PriceHistoryItem.new(timestamp: 0, price: 4199.99),
+        PriceHistoryItem.new(timestamp: 1, price: 4200.69)
+      ]
     )
   end
 
@@ -62,22 +77,34 @@ RSpec.describe VehicleListing do
           ]
         },
         price_history: {
-          oneOf: [
-            { type: 'array', items: { type: 'numeric' } },
-            { type: 'null' }
-          ]
+          type: 'array',
+          items: {
+            type: 'object',
+            additionalProperties: false,
+            required: %i[timestamp price],
+            properties: {
+              timestamp: { type: 'integer' },
+              price: { type: 'numeric' }
+            }
+          }
         }
       }
     }
   end
 
   it do
+    expect(subject).to be_a(VehicleListing)
     expect(subject.vin).to eq('xxx')
     expect(subject.make_slug).to eq('ford')
     expect(subject.model_slug).to eq('f-150')
     expect(subject.dealership_id).to eq(42)
     expect(subject.price).to eq(4200.69)
-    expect(subject.price_history).to eq([4199.99, 4200.69])
+    expect(subject.price_history).to eq(
+      [
+        PriceHistoryItem.new(timestamp: 0, price: 4199.99),
+        PriceHistoryItem.new(timestamp: 1, price: 4200.69)
+      ]
+    )
 
     expect(DeeTeaOhh::Schema.json(subject))
       .to eq(expected_json_schema)
