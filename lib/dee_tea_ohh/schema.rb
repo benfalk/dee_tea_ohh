@@ -12,8 +12,11 @@ module DeeTeaOhh
 
     module_function
 
-    # @param type [DeeTeaOhh::Type::Base]
+    # @param raw_type [DeeTeaOhh::Type::Base]
     # @return [Hash]
-    def json(type) = JSON.schema(type)
+    def json(raw_type)
+      type = DeeTeaOhh::DSL::TypeResolver.resolve(raw_type)
+      JSON.schema(type)
+    end
   end
 end

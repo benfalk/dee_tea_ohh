@@ -11,4 +11,11 @@ module DeeTeaOhh
   require_relative 'dee_tea_ohh/attribute'
   require_relative 'dee_tea_ohh/type'
   require_relative 'dee_tea_ohh/schema'
+  require_relative 'dee_tea_ohh/dsl'
+
+  def self.object(&)
+    builder = DeeTeaOhh::DSL::DataBuilder.new
+    builder.instance_exec(&)
+    builder.build
+  end
 end

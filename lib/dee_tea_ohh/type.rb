@@ -15,7 +15,6 @@ module DeeTeaOhh::Type
     # @return [Hash]
     def json_schema = DeeTeaOhh::Schema.json(self)
   end
-  private_constant :Base
 
   # = Object Type Definition
   #
