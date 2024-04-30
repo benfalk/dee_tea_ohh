@@ -13,6 +13,7 @@ module DeeTeaOhh
   require_relative 'dee_tea_ohh/schema'
   require_relative 'dee_tea_ohh/dsl'
 
+  # @return [Class]
   def self.object(&)
     builder = DeeTeaOhh::DSL::DataBuilder.new
     builder.instance_exec(&)

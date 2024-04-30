@@ -2,8 +2,8 @@
 
 # = Data Builder
 class DeeTeaOhh::DSL::DataBuilder
-  def initialize
-    @builder = DeeTeaOhh::Attribute::ListBuilder.new
+  def initialize(builder = DeeTeaOhh::Attribute::ListBuilder.new)
+    @builder = builder
     @resolver = DeeTeaOhh::DSL::TypeResolver
   end
 
@@ -29,6 +29,22 @@ class DeeTeaOhh::DSL::DataBuilder
   end
 
   private
+
+  def Boolean # rubocop:disable Naming/MethodName
+    DeeTeaOhh::Type::Boolean.new
+  end
+
+  def Object(**attributes) # rubocop:disable Naming/MethodName
+    attrs = attributes.map do |field_name, type_spec|
+      DeeTeaOhh::Attribute.new(
+        field_name:,
+        type: @resolver.resolve(type_spec),
+        is_required: true
+      )
+    end
+    list_builder = DeeTeaOhh::Attribute::ListBuilder.new(attrs)
+    DeeTeaOhh::DSL::DataBuilder.new(list_builder).build
+  end
 
   def Nullable(type_spec) # rubocop:disable Naming/MethodName
     type = @resolver.resolve(type_spec)

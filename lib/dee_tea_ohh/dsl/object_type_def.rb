@@ -8,6 +8,7 @@
 module DeeTeaOhh::DSL::ObjectTypeDef
   # @private
   module ClassMethods
+    # @return [DeeTeaOhh::Type::Object]
     def dto_type = @dto_type
 
     def inherited(klass)
@@ -17,6 +18,16 @@ module DeeTeaOhh::DSL::ObjectTypeDef
         :@dto_type,
         dto_type
       )
+    end
+
+    # @return [Class<Data>]
+    def extend_with(&)
+      list = DeeTeaOhh::Attribute::ListBuilder.new(
+        dto_type.attributes.to_a
+      )
+      builder = DeeTeaOhh::DSL::DataBuilder.new(list)
+      builder.instance_exec(&)
+      builder.build
     end
   end
   private_constant :ClassMethods
