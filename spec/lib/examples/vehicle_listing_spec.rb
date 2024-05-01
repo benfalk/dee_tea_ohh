@@ -4,11 +4,11 @@ class PriceHistoryItem < DeeTeaOhh.object \
   do
     # @!attribute [r] timestamp
     #   @return [Integer]
-    attribute(:timestamp, Integer)
+    attribute :timestamp, Integer
 
     # @!attribute [r] price
     #   @return [Float]
-    attribute(:price, Float)
+    attribute :price, Float
   end
 end
 
@@ -16,27 +16,31 @@ class VehicleListing < DeeTeaOhh.object \
   do
     # @!attribute [r] vin
     #   @return [String]
-    attribute(:vin, String)
+    attribute :vin, String
 
     # @!attribute [r] make_slug
     #   @return [String]
-    attribute(:make_slug, String)
+    attribute :make_slug, String
 
     # @!attribute [r] model_slug
     #   @return [String]
-    attribute(:model_slug, String)
+    attribute :model_slug, String
 
     # @!attribute [r] dealership_id
     #   @return [Integer]
-    attribute(:dealership_id, Integer)
+    attribute :dealership_id, Integer
 
     # @!attribute [r] price
     #   @return [Float]
-    attribute(:price, Nullable(Float))
+    attribute :price, Nullable(Float)
 
     # @!attribute [r] price_history
     #   @return [Array<PriceHistoryItem>]
-    attribute(:price_history, Array(PriceHistoryItem))
+    attribute :price_history, Array(PriceHistoryItem)
+
+    # @!attribute [r] price_history
+    #   @return ['red', 'green', 'blue', 'yellow']
+    attribute :color, Enum('red', 'green', 'blue', 'yellow')
   end
 end
 
@@ -50,6 +54,7 @@ RSpec.describe VehicleListing do
       model_slug: 'f-150',
       dealership_id: 42,
       price: 4200.69,
+      color: 'red',
       price_history: [
         PriceHistoryItem.new(timestamp: 0, price: 4199.99),
         PriceHistoryItem.new(timestamp: 1, price: 4200.69)
@@ -64,6 +69,7 @@ RSpec.describe VehicleListing do
       required: %i[
         vin make_slug model_slug
         dealership_id price price_history
+        color
       ],
       properties: {
         vin: { type: 'string' },
@@ -75,6 +81,10 @@ RSpec.describe VehicleListing do
             { type: 'numeric' },
             { type: 'null' }
           ]
+        },
+        color: {
+          type: 'string',
+          enum: %w[red green blue yellow].to_set
         },
         price_history: {
           type: 'array',

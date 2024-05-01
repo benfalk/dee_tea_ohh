@@ -5,6 +5,6 @@ RSpec.describe DeeTeaOhh::Type::Integer do
 
   it do
     expect(instance).to be_a(described_class)
-    expect(instance.json_schema).to eq(type: 'integer')
+    expect(DeeTeaOhh::Schema.json(instance)).to eq(type: 'integer')
   end
 end

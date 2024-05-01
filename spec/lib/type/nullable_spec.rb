@@ -6,7 +6,7 @@ RSpec.describe DeeTeaOhh::Type::Nullable do
 
   it do
     expect(instance.type).to eq(type)
-    expect(instance.json_schema).to eq(
+    expect(DeeTeaOhh::Schema.json(instance)).to eq(
       {
         oneOf: [
           { type: 'numeric' },

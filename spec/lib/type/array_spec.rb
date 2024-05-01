@@ -6,7 +6,7 @@ RSpec.describe DeeTeaOhh::Type::Array do
 
   it do
     expect(instance.type).to eq(type)
-    expect(instance.json_schema).to eq(
+    expect(DeeTeaOhh::Schema.json(instance)).to eq(
       {
         type: 'array',
         items: { type: 'numeric' }

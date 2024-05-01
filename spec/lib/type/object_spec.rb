@@ -8,7 +8,7 @@ RSpec.describe DeeTeaOhh::Type::Object do
 
     it do
       expect(instance.attributes).to eq(attr_list)
-      expect(instance.json_schema).to eq(
+      expect(DeeTeaOhh::Schema.json(instance)).to eq(
         {
           type: 'object',
           additionalProperties: false,
@@ -24,7 +24,7 @@ RSpec.describe DeeTeaOhh::Type::Object do
 
     it do
       expect(instance.attributes).to eq(attr_list)
-      expect(instance.json_schema).to eq(
+      expect(DeeTeaOhh::Schema.json(instance)).to eq(
         {
           type: 'object',
           additionalProperties: false,

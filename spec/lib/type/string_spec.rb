@@ -5,6 +5,6 @@ RSpec.describe DeeTeaOhh::Type::String do
 
   it do
     expect(instance).to be_a(described_class)
-    expect(instance.json_schema).to eq(type: 'string')
+    expect(DeeTeaOhh::Schema.json(instance)).to eq(type: 'string')
   end
 end

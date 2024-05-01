@@ -10,6 +10,10 @@ module DeeTeaOhh::DSL::TypeResolver
   end
   private_constant :Constants
 
+  refine Kernel do
+    import_methods DeeTeaOhh::DSL::TypeSpecs
+  end
+
   refine Symbol do
     def dto_type
       case self
@@ -66,6 +70,16 @@ module DeeTeaOhh::DSL::TypeResolver
 
   refine ::FalseClass do
     def dto_type = Constants::BOOLEAN
+  end
+
+  refine ::Set do
+    def dto_type
+      # TODO: Type checking of all values
+      DeeTeaOhh::Type::Enum.new(
+        first.dto_type,
+        values: dup.freeze
+      )
+    end
   end
 
   using self

@@ -5,6 +5,6 @@ RSpec.describe DeeTeaOhh::Type::Float do
 
   it do
     expect(instance).to be_a(described_class)
-    expect(instance.json_schema).to eq(type: 'numeric')
+    expect(DeeTeaOhh::Schema.json(instance)).to eq(type: 'numeric')
   end
 end

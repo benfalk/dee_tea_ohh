@@ -16,7 +16,7 @@ RSpec.describe DeeTeaOhh::DSL::DataBuilder do
 
     expect(dto_class.dto_type).to be_frozen
 
-    expect(dto_class.dto_type.json_schema)
+    expect(DeeTeaOhh::Schema.json(dto_class.dto_type))
       .to eq(
         type: 'object',
         additionalProperties: false,

@@ -11,10 +11,7 @@ module DeeTeaOhh::Type
   # Any and all shared functionality comes from
   # this base type definition.
   #
-  class Base
-    # @return [Hash]
-    def json_schema = DeeTeaOhh::Schema.json(self)
-  end
+  Base = Class.new
 
   # = Object Type Definition
   #
@@ -46,6 +43,28 @@ module DeeTeaOhh::Type
     def initialize(type)
       super()
       @type = type
+      freeze
+    end
+  end
+
+  # = Enumeration Type Definition
+  #
+  # The wrapper that describes a type and holds
+  # a discrete set of values of that type.
+  #
+  class Enum < Base
+    # @return [DeeTeaOhh::Type::Base]
+    attr_reader :type
+
+    # @return [Set<Object>]
+    attr_reader :values
+
+    # @param type [DeeTeaOhh::Type::Base]
+    # @param values [Set<Object>]
+    def initialize(type, values:)
+      super()
+      @type = type
+      @values = values
       freeze
     end
   end

@@ -66,6 +66,12 @@ module DeeTeaOhh::Schema
       end
     end
 
+    refine DeeTeaOhh::Type::Enum do
+      def schema
+        type.schema.merge(enum: values).freeze
+      end
+    end
+
     refine DeeTeaOhh::Type::String do
       # @return [Hash]
       def schema = Constants::STRING
